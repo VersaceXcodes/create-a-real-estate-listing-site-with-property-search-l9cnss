@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useAppStore } from "@/store/main";
@@ -121,7 +121,7 @@ const UV_EditListing: React.FC = () => {
       const payload = {
         ...listingForm,
         images: imageUploads,
-        isPublished: publishState.isPublished,
+        published_at: publishState.isPublished ? new Date().toISOString() : null
       };
       const response = await axios.put(`${base_url}/api/properties/${id}`, payload, {
         headers: { Authorization: `Bearer ${auth_state.token}` },
