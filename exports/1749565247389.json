@@ -1,0 +1,19 @@
+{
+  "timestamp": 1749565247389,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_Logout",
+      "version": "latest"
+    }
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/vitereact/src/components/views/UV_Logout.tsx",
+      "type": "text",
+      "size": 1772,
+      "dependencies": false
+    }
+  ]
+}

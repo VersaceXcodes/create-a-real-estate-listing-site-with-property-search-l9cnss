@@ -1,0 +1,15 @@
+{
+  "timestamp": 1749563994321,
+  "operation": {
+    "id": "db:postgres"
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/backend/db.sql",
+      "type": "text",
+      "size": 7682,
+      "dependencies": false
+    }
+  ]
+}

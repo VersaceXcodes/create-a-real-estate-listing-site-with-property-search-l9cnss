@@ -1,0 +1,19 @@
+{
+  "timestamp": 1749566021458,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_AdvancedSearch",
+      "version": "latest"
+    }
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/vitereact/src/components/views/UV_AdvancedSearch.tsx",
+      "type": "text",
+      "size": 11887,
+      "dependencies": false
+    }
+  ]
+}

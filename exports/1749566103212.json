@@ -1,0 +1,19 @@
+{
+  "timestamp": 1749566103212,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_PropertyDetail",
+      "version": "1749565836858"
+    }
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/vitereact/src/components/views/UV_PropertyDetail.tsx",
+      "type": "text",
+      "size": 11302,
+      "dependencies": false
+    }
+  ]
+}

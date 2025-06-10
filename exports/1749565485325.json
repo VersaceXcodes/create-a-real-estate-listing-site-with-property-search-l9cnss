@@ -1,0 +1,19 @@
+{
+  "timestamp": 1749565485325,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "GV_TopNav",
+      "version": "latest"
+    }
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/vitereact/src/components/views/GV_TopNav.tsx",
+      "type": "text",
+      "size": 4274,
+      "dependencies": false
+    }
+  ]
+}

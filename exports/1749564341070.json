@@ -1,0 +1,15 @@
+{
+  "timestamp": 1749564341070,
+  "operation": {
+    "id": "settings:config:package"
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/vitereact/package.json",
+      "type": "text",
+      "size": 2910,
+      "dependencies": true
+    }
+  ]
+}

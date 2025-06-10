@@ -1,0 +1,21 @@
+{
+  "timestamp": 1749565073960,
+  "operation": {
+    "id": "settings:config:package"
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/backend/package.json",
+      "type": "text",
+      "size": 831,
+      "dependencies": true
+    },
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/backend/.env",
+      "type": "text",
+      "size": 297,
+      "dependencies": false
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "timestamp": 1749565440467,
+  "operation": {
+    "id": "backend:server:main"
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/backend/server.js",
+      "type": "text",
+      "size": 25706,
+      "dependencies": false
+    }
+  ]
+}

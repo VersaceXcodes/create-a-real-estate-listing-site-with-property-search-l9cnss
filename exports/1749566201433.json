@@ -1,0 +1,19 @@
+{
+  "timestamp": 1749566201433,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_PasswordRecovery",
+      "version": "latest"
+    }
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/vitereact/src/components/views/UV_PasswordRecovery.tsx",
+      "type": "text",
+      "size": 4185,
+      "dependencies": false
+    }
+  ]
+}

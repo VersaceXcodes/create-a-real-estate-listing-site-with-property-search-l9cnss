@@ -1,0 +1,19 @@
+{
+  "timestamp": 1749564338208,
+  "operation": {
+    "id": "webapp:react:store",
+    "refs": {
+      "id": "redux",
+      "version": "latest"
+    }
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/vitereact/src/store/main.tsx",
+      "type": "text",
+      "size": 2243,
+      "dependencies": false
+    }
+  ]
+}

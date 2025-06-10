@@ -1,0 +1,15 @@
+{
+  "timestamp": 1749564370364,
+  "operation": {
+    "id": "backend:specifications:openapi"
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/backend/openapi.yaml",
+      "type": "text",
+      "size": 16652,
+      "dependencies": false
+    }
+  ]
+}

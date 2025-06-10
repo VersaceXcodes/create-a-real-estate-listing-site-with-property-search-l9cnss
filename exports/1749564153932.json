@@ -1,0 +1,15 @@
+{
+  "timestamp": 1749564153932,
+  "operation": {
+    "id": "backend:specifications:asyncapi"
+  },
+  "projectId": "create-a-real-estate-listing-site-with-property-search",
+  "files": [
+    {
+      "path": "/mnt/data/create-a-real-estate-listing-site-with-property-search/backend/asyncapi.yaml",
+      "type": "text",
+      "size": 3,
+      "dependencies": false
+    }
+  ]
+}

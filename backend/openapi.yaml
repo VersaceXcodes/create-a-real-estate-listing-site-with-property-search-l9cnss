@@ -1,0 +1,655 @@
+openapi: 3.0.0
+info:
+  title: EstateFinder API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user (property seeker or agent)
+      operationId: auth_register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "200":
+          description: Registration successful. Returns user data and JWT token.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterResponse"
+  /api/auth/login:
+    post:
+      summary: Authenticate an existing user and return a JWT token
+      operationId: auth_login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful. Returns user data and JWT token.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+  /api/auth/password_resets:
+    post:
+      summary: Initiate a password reset process for a user
+      operationId: auth_password_reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordResetRequest"
+      responses:
+        "200":
+          description: Password reset instructions sent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PasswordResetResponse"
+  /api/properties:
+    get:
+      summary: Retrieve a list of property listings with optional filters, sorting,
+        and pagination
+      operationId: properties_get
+      parameters:
+        - in: query
+          name: keywords
+          schema:
+            type: string
+          description: Keywords for text search
+        - in: query
+          name: price_min
+          schema:
+            type: number
+          description: Minimum price filter
+        - in: query
+          name: price_max
+          schema:
+            type: number
+          description: Maximum price filter
+        - in: query
+          name: bedrooms
+          schema:
+            type: number
+          description: Filter by number of bedrooms
+        - in: query
+          name: bathrooms
+          schema:
+            type: number
+          description: Filter by number of bathrooms
+        - in: query
+          name: property_type
+          schema:
+            type: string
+          description: Filter by property type (e.g., apartment, house, condo)
+        - in: query
+          name: city
+          schema:
+            type: string
+          description: Filter by city
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: number
+          description: Number of listings per page
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: Sort order (e.g., "price_asc", "price_desc", "newest")
+      responses:
+        "200":
+          description: A list of property listings.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PropertyListingList"
+    post:
+      summary: Create a new property listing (Agent only)
+      operationId: properties_create
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePropertyListingRequest"
+      responses:
+        "200":
+          description: Property listing created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PropertyListingDetail"
+  /api/properties/{id}:
+    get:
+      summary: Retrieve detailed information for a specific property listing
+      operationId: properties_get_by_id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the property listing
+      responses:
+        "200":
+          description: Detailed information about the property listing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PropertyListingDetail"
+    put:
+      summary: Update an existing property listing (Agent only)
+      operationId: properties_update
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the property listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePropertyListingRequest"
+      responses:
+        "200":
+          description: Property listing updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PropertyListingDetail"
+    delete:
+      summary: Delete a property listing (Agent only, performs a soft delete)
+      operationId: properties_delete
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the property listing
+      responses:
+        "200":
+          description: Property listing deletion successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"
+  /api/inquiries:
+    post:
+      summary: Submit an inquiry for a property listing
+      operationId: inquiries_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InquiryRequest"
+      responses:
+        "200":
+          description: Inquiry submitted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InquiryResponse"
+  /api/favorites:
+    get:
+      summary: Retrieve favorite property listings for the authenticated property seeker
+      operationId: favorites_get
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: A list of favorite property listings.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FavoriteList"
+    post:
+      summary: Add a property listing to the authenticated property seeker's favorites
+      operationId: favorites_create
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavoriteRequest"
+      responses:
+        "200":
+          description: Favorite added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FavoriteResponse"
+  /api/favorites/{id}:
+    delete:
+      summary: Remove a property listing from favorites
+      operationId: favorites_delete
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the favorite record
+      responses:
+        "200":
+          description: Favorite removed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"
+  /api/agent/inquiries:
+    get:
+      summary: Retrieve inquiries for an authenticated agent's property listings
+      operationId: agent_inquiries_get
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: A list of inquiries related to the agent's property listings.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InquiryList"
+  /api/admin/users:
+    get:
+      summary: Retrieve all user accounts (Admin only)
+      operationId: admin_users_get
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: A list of all user accounts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserList"
+  /api/admin/listings:
+    get:
+      summary: Retrieve all property listings for moderation (Admin only)
+      operationId: admin_listings_get
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: A list of all property listings.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PropertyListingList"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+    DeleteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Confirmation message for deletion
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        company_name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    UserList:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+        - first_name
+        - last_name
+        - role
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        role:
+          type: string
+          description: Must be either "seeker" or "agent"
+        phone:
+          type: string
+        company_name:
+          type: string
+    RegisterResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+    PasswordResetRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+    PasswordResetResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    PropertyImage:
+      type: object
+      properties:
+        id:
+          type: string
+        property_listing_id:
+          type: string
+        image_url:
+          type: string
+        alt_text:
+          type: string
+        display_order:
+          type: number
+        created_at:
+          type: string
+    PropertyListingSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        price:
+          type: number
+        city:
+          type: string
+        bedrooms:
+          type: number
+        bathrooms:
+          type: number
+        primary_image_url:
+          type: string
+          description: URL of the primary thumbnail image
+    PropertyListingDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        agent_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        property_type:
+          type: string
+        price:
+          type: number
+        address:
+          type: string
+        city:
+          type: string
+        zip_code:
+          type: string
+        amenities:
+          type: array
+          items:
+            type: string
+        bedrooms:
+          type: number
+        bathrooms:
+          type: number
+        area:
+          type: number
+        latitude:
+          type: number
+        longitude:
+          type: number
+        status:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        published_at:
+          type: string
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/PropertyImage"
+        agent:
+          $ref: "#/components/schemas/User"
+    PropertyListingList:
+      type: array
+      items:
+        $ref: "#/components/schemas/PropertyListingSummary"
+    CreatePropertyListingRequest:
+      type: object
+      required:
+        - title
+        - description
+        - property_type
+        - price
+        - address
+        - city
+        - zip_code
+        - bedrooms
+        - bathrooms
+        - area
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        property_type:
+          type: string
+        price:
+          type: number
+        address:
+          type: string
+        city:
+          type: string
+        zip_code:
+          type: string
+        amenities:
+          type: array
+          items:
+            type: string
+        bedrooms:
+          type: number
+        bathrooms:
+          type: number
+        area:
+          type: number
+        latitude:
+          type: number
+        longitude:
+          type: number
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              image_url:
+                type: string
+              alt_text:
+                type: string
+              display_order:
+                type: number
+    UpdatePropertyListingRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        property_type:
+          type: string
+        price:
+          type: number
+        address:
+          type: string
+        city:
+          type: string
+        zip_code:
+          type: string
+        amenities:
+          type: array
+          items:
+            type: string
+        bedrooms:
+          type: number
+        bathrooms:
+          type: number
+        area:
+          type: number
+        latitude:
+          type: number
+        longitude:
+          type: number
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              image_url:
+                type: string
+              alt_text:
+                type: string
+              display_order:
+                type: number
+    InquiryRequest:
+      type: object
+      required:
+        - property_listing_id
+        - sender_name
+        - sender_email
+        - message
+      properties:
+        property_listing_id:
+          type: string
+        sender_name:
+          type: string
+        sender_email:
+          type: string
+        sender_phone:
+          type: string
+        message:
+          type: string
+    InquiryResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        property_listing_id:
+          type: string
+        sender_name:
+          type: string
+        sender_email:
+          type: string
+        sender_phone:
+          type: string
+        message:
+          type: string
+        is_read:
+          type: boolean
+        created_at:
+          type: string
+    InquiryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/InquiryResponse"
+    FavoriteRequest:
+      type: object
+      required:
+        - property_listing_id
+      properties:
+        property_listing_id:
+          type: string
+    FavoriteResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        property_listing_id:
+          type: string
+        created_at:
+          type: string
+    FavoriteList:
+      type: array
+      items:
+        $ref: "#/components/schemas/FavoriteResponse"
