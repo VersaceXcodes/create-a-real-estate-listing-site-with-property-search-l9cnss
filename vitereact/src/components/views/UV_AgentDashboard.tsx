@@ -37,44 +37,39 @@ const UV_AgentDashboard: React.FC = () => {
   }));
 
   const queryClient = useQueryClient();
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
-  // Fetch agent's property listings (GET /api/properties filtered by agent's token)
+  // Fetch agent's property listings filtered by agent_id
   const fetchAgentListings = async (): Promise<PropertyListingSummary[]> => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}/api/properties`,
-      {
-        headers: { Authorization: `Bearer ${auth_state.token}` },
-      }
-    );
+    const response = await axios.get(`${baseUrl}/api/properties?agent_id=${auth_state.user_id}`, {
+      headers: { Authorization: `Bearer ${auth_state.token}` },
+    });
     return response.data;
   };
 
-  // Fetch agent's inquiries (GET /api/agent/inquiries)
+  // Fetch agent's inquiries
   const fetchAgentInquiries = async (): Promise<InquiryResponse[]> => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}/api/agent/inquiries`,
-      {
-        headers: { Authorization: `Bearer ${auth_state.token}` },
-      }
-    );
+    const response = await axios.get(`${baseUrl}/api/agent/inquiries`, {
+      headers: { Authorization: `Bearer ${auth_state.token}` },
+    });
     return response.data;
   };
 
-  // Use react-query to fetch listings
+  // Use react-query to fetch listings with auth token as a dependency
   const {
     data: listings,
     isLoading: listingsLoading,
     isError: listingsIsError,
     error: listingsError,
-  } = useQuery<PropertyListingSummary[], Error>(["agentListings"], fetchAgentListings);
+  } = useQuery<PropertyListingSummary[], Error>(["agentListings", auth_state.token], fetchAgentListings);
 
-  // Use react-query to fetch inquiries
+  // Use react-query to fetch inquiries with auth token as a dependency
   const {
     data: inquiries,
     isLoading: inquiriesLoading,
     isError: inquiriesIsError,
     error: inquiriesError,
-  } = useQuery<InquiryResponse[], Error>(["agentInquiries"], fetchAgentInquiries);
+  } = useQuery<InquiryResponse[], Error>(["agentInquiries", auth_state.token], fetchAgentInquiries);
 
   // Define delete mutation for a listing (DELETE /api/properties/:id)
   const deleteListingApi = async (id: string): Promise<any> => {
@@ -90,7 +85,7 @@ const UV_AgentDashboard: React.FC = () => {
   const deleteMutation = useMutation(deleteListingApi, {
     onSuccess: () => {
       add_notification({ type: "success", message: "Listing deleted successfully" });
-      queryClient.invalidateQueries(["agentListings"]);
+      queryClient.invalidateQueries(["agentListings", auth_state.token]);
     },
     onError: () => {
       add_notification({ type: "error", message: "Failed to delete listing" });
@@ -111,6 +106,7 @@ const UV_AgentDashboard: React.FC = () => {
         <h1 className="text-2xl font-bold mb-4">Agent Dashboard</h1>
         <div className="mb-4 flex items-center space-x-4">
           <button
+            type="button"
             onClick={() => setActiveTab("listings")}
             className={`px-4 py-2 rounded ${
               activeTab === "listings"
@@ -121,6 +117,7 @@ const UV_AgentDashboard: React.FC = () => {
             Listings
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab("inquiries")}
             className={`px-4 py-2 rounded ${
               activeTab === "inquiries"
